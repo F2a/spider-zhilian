@@ -24,6 +24,7 @@ npm install
 # 执行程序
 node index
 
-# 爬取结果存入 ./data/data.json 中
+# 爬取结果存入 ./data/城市-data.json 中
+# .json 文件结构｛data: [数据], total: 数据总量, date: 爬取日期, city: 城市名, job: 岗位名｝
 
 ```
