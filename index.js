@@ -78,8 +78,8 @@ async function run() {
   console.log(start);
 
   if (start <= json.data.numFound) {
-    // 设置一点间隔时间, 避免被智联判断成DDOS攻击（可能会封IP）
-    setTimeout(run, 600);
+    // 设置一点间隔时间, 避免被智联判断成DDOS攻击
+    setTimeout(run, 666);
   } else {
     // 将数据存入文件
     cityJson.total = cityJson.data.length; // 定义一下总条数，方便分页
