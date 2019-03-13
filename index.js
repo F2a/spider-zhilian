@@ -1,18 +1,19 @@
 const spider = require('./model/spider');
 const file = require('./model/file');
 
-// 城市列表: [长沙，深圳，上海]
+// 城市列表: [长沙，深圳，上海， 北京]
 const citys = [
   {code: 749, name: 'changSha'},
-  {code: 765, name: 'shenzheng'},
-  {code: 538, name: 'shanghai'},
+  {code: 765, name: 'shenZheng'},
+  {code: 538, name: 'shangHai'},
+  {code: 530, name: 'beiJing'},
 ]; 
 
 let start = 0, // 爬取的url之start值
   index = 0, // 爬取的citys开始值
  cityJson = {data: []},// 待存入数据
  job = '前端开发工程师', // 爬取的职位
- date = new Date().toLocaleDateString(); // 爬取的时间
+ date = new Date().toLocaleDateString(); // 爬取的当前时间
 
 // 筛选数据
 function format(results) {
@@ -81,8 +82,8 @@ async function run() {
     setTimeout(run, 600);
   } else {
     // 将数据存入文件
-    cityJson.total = cityJson.data.length; //定义一下总条数，为以后的分页打基础
-    cityJson.city = citys[index].name; //城市名
+    cityJson.total = cityJson.data.length; // 定义一下总条数，方便分页
+    cityJson.city = citys[index].name; // 城市名
     cityJson.job = job; // 爬取的职业
     cityJson.date = date; // 爬取的时间
     file.writeFile(`./data/${citys[index].name}-data.json`, JSON.stringify(cityJson)).then((err) => {
@@ -91,7 +92,7 @@ async function run() {
       console.log('总数：'+cityJson.total);
       console.log(citys[index].name + ' crawling done!');
       index++;start = 0;
-      setTimeout(run, 600);
+      setTimeout(run, 1000);
       if(index >= citys.length){
         console.log('completed!');
         process.exit();
