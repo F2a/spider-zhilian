@@ -18,11 +18,13 @@ const options = {
   }
 };
 
+
+
 /**
  * 根据start的值，将获取的数据返回
  */
-async function fetch(start = 0) {
-  setOptionPath(start);
+async function fetch(start = 0, city = 749) {
+  setOptionPath(start, city);
   let data = await request(options);
   return data;
 }
@@ -30,8 +32,8 @@ async function fetch(start = 0) {
 /**
  * 根据start动态修改options.path
  */
-function setOptionPath(start){
-  options.path=`/c/i/sou?${start>0?"start="+start+"&":""}pageSize=100&cityId=749&workExperience=-1&education=-1&companyType=-1&employmentType=-1&jobWelfareTag=-1&kw=%E5%89%8D%E7%AB%AF&kt=3&rt=4919738b51ee4205a4baa4294e3da84a&_v=0.77951677&x-zp-page-request-id=f9027b40863c418c83ed3beaded8d852-1551528533959-430100`;
+function setOptionPath(start, city){
+  options.path=`/c/i/sou?${start>0?"start="+start+"&":""}pageSize=100&cityId=${city}&workExperience=-1&education=-1&companyType=-1&employmentType=-1&jobWelfareTag=-1&kw=%E5%89%8D%E7%AB%AF&kt=3&_v=0.34735864&x-zp-page-request-id=8ac329579fc943849f24c4d8d2f0484e-1552445482544-781510`;
 }
 
 /**

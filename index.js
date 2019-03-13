@@ -1,8 +1,15 @@
 const spider = require('./model/spider');
 const file = require('./model/file');
 
+const citys = [
+  {code: 749, name: 'changSha'},
+  {code: 765, name: 'shenzheng'},
+  {code: 538, name: 'shanghai'},
+  ]; // 城市列表: [长沙，深圳，上海]
+
 let start = 0, // 爬取的url之start值
- dataJson = {data: []}; // 待存入数据
+  index = 0, // 爬取的citys开始值
+ cityJson = {data: []}; // 待存入数据
 
 // 筛选数据
 function format(results) {
@@ -39,7 +46,7 @@ async function run() {
   let data, json, arr, dbResult;
   try {
     // 爬取数据
-    data = await spider.fetch(start);
+    data = await spider.fetch(start, citys[index].code);
     json = JSON.parse(data);
 
     // 格式化数据
@@ -49,7 +56,7 @@ async function run() {
     // dbResult = await db.insert(arr, tableName);
 
     // 数据写入
-    dataJson.data.splice(dataJson.data.length, 0, ...arr); //将传来的对象push进数组对象中
+    cityJson.data.splice(cityJson.data.length, 0, ...arr); //将传来的对象push进数组对象中
 
   } catch (e) {
     // 如果出现错误，将错误写入文件
@@ -71,13 +78,18 @@ async function run() {
     setTimeout(run, 600);
   } else {
     // 将数据存入文件
-    dataJson.total = dataJson.data.length; //定义一下总条数，为以后的分页打基础
-    file.writeFile('./data/data.json', JSON.stringify(dataJson)).then((err) => {
+    cityJson.total = cityJson.data.length; //定义一下总条数，为以后的分页打基础
+    file.writeFile(`./data/${citys[index].name}-data.json`, JSON.stringify(cityJson)).then((err) => {
       if (err) throw err;
       // 爬取完毕
-      console.log('总数：'+dataJson.total);
-      console.log('done!');
-      process.exit();
+      console.log('总数：'+cityJson.total);
+      console.log(citys[index].name + ' crawling done!');
+      index++;start = 0;
+      setTimeout(run, 600);
+      if(index >= citys.length){
+        console.log('completed!');
+        process.exit();
+      } 
     });
   }
 }
